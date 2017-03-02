@@ -1,5 +1,5 @@
 #!/bin/bash
-# OpenVPN road warrior installer for Debian, Ubuntu and CentOS
+# OpenVPN 1nK-9h0st installer for Debian, Ubuntu and CentOS
 
 # This script will work on Debian, Ubuntu, CentOS and probably other distros
 # of the same families, although no support is offered for them. It isn't
@@ -15,12 +15,12 @@ if readlink /proc/$$/exe | grep -qs "dash"; then
 fi
 
 if [[ "$EUID" -ne 0 ]]; then
-	echo "Sorry, you need to run this as root"
+	echo "Maaf, sebaiknya akses dengan hak akses root"
 	exit 2
 fi
 
 if [[ ! -e /dev/net/tun ]]; then
-	echo "TUN is not available"
+	echo "TUN tidak tersedia"
 	exit 3
 fi
 
@@ -37,7 +37,7 @@ elif [[ -e /etc/centos-release || -e /etc/redhat-release ]]; then
 	GROUPNAME=nobody
 	RCLOCAL='/etc/rc.d/rc.local'
 else
-	echo "Looks like you aren't running this installer on a Debian, Ubuntu or CentOS system"
+	echo "Sepertinya Anda tidak menjalankan installer ini pada sistem Debian, Ubuntu atau CentOS"
 	exit 5
 fi
 
@@ -70,26 +70,26 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 	while :
 	do
 	clear
-		echo "Looks like OpenVPN is already installed"
+		echo "1nK-9h0st-Script | Sepertinya OpenVPN sudah diinstal"
 		echo ""
-		echo "What do you want to do?"
-		echo "   1) Add a new user"
-		echo "   2) Revoke an existing user"
-		echo "   3) Remove OpenVPN"
-		echo "   4) Exit"
+		echo "1nK-9h0st-Script | apa yang akan anda lakuka?"
+		echo "   1) Menambahkan user baru"
+		echo "   2) Hapus user yang ada"
+		echo "   3) Hapus OpenVPN"
+		echo "   4) Keluar"
 		read -p "Select an option [1-4]: " option
 		case $option in
 			1) 
 			echo ""
-			echo "Tell me a name for the client certificate"
-			echo "Please, use one word only, no special characters"
+			echo "Nama sertifikat atau user yang akan di buat"
+			echo "Tidak boleh menggunakana karakter khusus (seperti:%#@!()%)!"
 			read -p "Client name: " -e -i client CLIENT
 			cd /etc/openvpn/easy-rsa/
 			./easyrsa build-client-full $CLIENT nopass
 			# Generates the custom client.ovpn
 			newclient "$CLIENT"
 			echo ""
-			echo "Client $CLIENT added, configuration is available at" ~/"$CLIENT.ovpn"
+			echo "Client $CLIENT Berhasil di tambahkan, Konfigurasi di tersedia di" ~/"$CLIENT.ovpn"
 			exit
 			;;
 			2)
@@ -98,11 +98,11 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 			NUMBEROFCLIENTS=$(tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep -c "^V")
 			if [[ "$NUMBEROFCLIENTS" = '0' ]]; then
 				echo ""
-				echo "You have no existing clients!"
+				echo "Anda tidak memiliki klient yang sudah ada!"
 				exit 6
 			fi
 			echo ""
-			echo "Select the existing client certificate you want to revoke"
+			echo "Pilih klient sertifikat yang akan anda hapus"
 			tail -n +2 /etc/openvpn/easy-rsa/pki/index.txt | grep "^V" | cut -d '=' -f 2 | nl -s ') '
 			if [[ "$NUMBEROFCLIENTS" = '1' ]]; then
 				read -p "Select one client [1]: " CLIENTNUMBER
@@ -126,7 +126,7 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 			;;
 			3) 
 			echo ""
-			read -p "Do you really want to remove OpenVPN? [y/n]: " -e -i n REMOVE
+			read -p "1nK-9h0st-Script | Apa anda benar-benar akan menghapus OpenVPN? [y/n]: " -e -i n REMOVE
 			if [[ "$REMOVE" = 'y' ]]; then
 				PORT=$(grep '^port ' /etc/openvpn/server.conf | cut -d " " -f 2)
 				PROTOCOL=$(grep '^proto ' /etc/openvpn/server.conf | cut -d " " -f 2)
@@ -163,10 +163,10 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 				rm -rf /etc/openvpn
 				rm -rf /usr/share/doc/openvpn*
 				echo ""
-				echo "OpenVPN removed!"
+				echo "1nK-9h0st-Script | Pengahapusan OpenVPN berhasil"
 			else
 				echo ""
-				echo "Removal aborted!"
+				echo "Penghapusan OpenVPN Gagal"
 			fi
 			exit
 			;;
@@ -175,20 +175,20 @@ if [[ -e /etc/openvpn/server.conf ]]; then
 	done
 else
 	clear
-	echo 'Welcome to this quick OpenVPN "road warrior" installer'
+	echo 'Welcome to this quick OpenVPN "1nK-9h0st-Script | " installer'
 	echo ""
 	# OpenVPN setup and first user creation
-	echo "I need to ask you a few questions before starting the setup"
-	echo "You can leave the default options and just press enter if you are ok with them"
+	echo "Saya perlu mengajukan beberapa pertanyaan sebelum memulai setup"
+	echo "Anda dapat meninggalkan pilihan default dan hanya tekan enter jika Anda ok dengan mereka"
 	echo ""
-	echo "First I need to know the IPv4 address of the network interface you want OpenVPN"
-	echo "listening to."
+	echo "Pertama saya perlu tahu alamat IPv4 dari antarmuka jaringan Anda ingin OpenVPN"
+	echo "Mendengarkan."
 	read -p "IP address: " -e -i $IP IP
 	echo ""
-	echo "Which protocol do you want for OpenVPN connections?"
-	echo "   1) UDP (recommended)"
-	echo "   2) TCP"
-	read -p "Protocol [1-2]: " -e -i 1 PROTOCOL
+	echo "1nK-9h0st-Script | Pilih Protocol yang akan anda gunakana?"
+	echo "   1) UDP"
+	echo "   2) TCP (Recommended)"
+	read -p "Protocol [1-2]: " -e -i 2 PROTOCOL
 	case $PROTOCOL in
 		1) 
 		PROTOCOL=udp
@@ -198,10 +198,10 @@ else
 		;;
 	esac
 	echo ""
-	echo "What port do you want OpenVPN listening to?"
+	echo "1nK-9h0st-Script | Masukan port yang anda inginkan?"
 	read -p "Port: " -e -i 1194 PORT
 	echo ""
-	echo "Which DNS do you want to use with the VPN?"
+	echo "1nK-9h0st-Script | DNS yang anda gunakan di OpenVPN?"
 	echo "   1) Current system resolvers"
 	echo "   2) Google"
 	echo "   3) OpenDNS"
@@ -210,12 +210,12 @@ else
 	echo "   6) Verisign"
 	read -p "DNS [1-6]: " -e -i 1 DNS
 	echo ""
-	echo "Finally, tell me your name for the client certificate"
-	echo "Please, use one word only, no special characters"
+	echo "1nK-9h0st-Script | Terakhir silahkan masukan nama klient yang anda inginkan"
+	echo "Harap tidak ada karakter khusus"
 	read -p "Client name: " -e -i client CLIENT
 	echo ""
-	echo "Okay, that was all I needed. We are ready to setup your OpenVPN server now"
-	read -n1 -r -p "Press any key to continue..."
+	echo "1nK-9h0st-Script | Siiippp, anda sudah siap melakukan penginstalan OpenVPN ini"
+	read -n1 -r -p "Silahkan tekan tombol sembarang untuk melanjutkan..."
 	if [[ "$OS" = 'debian' ]]; then
 		apt-get update
 		apt-get install openvpn iptables openssl ca-certificates -y
@@ -371,7 +371,7 @@ exit 0' > $RCLOCAL
 	EXTERNALIP=$(wget -4qO- "http://whatismyip.akamai.com/")
 	if [[ "$IP" != "$EXTERNALIP" ]]; then
 		echo ""
-		echo "Looks like your server is behind a NAT!"
+		echo "Sepertinya server Anda berada di belakang NAT!"
 		echo ""
 		echo "If your server is NATed (e.g. LowEndSpirit), I need to know the external IP"
 		echo "If that's not the case, just ignore this and leave the next field blank"
@@ -400,8 +400,9 @@ verb 3" > /etc/openvpn/client-common.txt
 	# Generates the custom client.ovpn
 	newclient "$CLIENT"
 	echo ""
-	echo "Finished!"
+	echo "1nK-9h0st-Script | Selesai!"
 	echo ""
-	echo "Your client configuration is available at" ~/"$CLIENT.ovpn"
-	echo "If you want to add more clients, you simply need to run this script again!"
+	echo "1nK-9h0st-Script | Anda sudah berhasil install Openvpn, tersedia di" ~/"$CLIENT.ovpn"
+	echo "1nK-9h0st-Script | Jika anda ingin menambhkan User baru silahkan jalankan script ini lagi!"
+	echo "Thanks You :* Setup By 1nK-9h0st @Gracies Blaugrana "
 fi
