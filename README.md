@@ -5,7 +5,7 @@
 # Cara installasi
     Silahkan ikuti intruksi di bawah ini
      copas kode di bawah ini 
-     wget https://git.io/vyGwG -O 1nK-9h0st-OpenVPN.sh && bash 1nK-9h0st-OpenVPN.sh
+     #wget https://git.io/vyGoN -O 1nK-9h0st-OpenVPN.sh && bash 1nK-9h0st-OpenVPN.sh
       
   
   kemudian ikuti intruksinya di dalam console (y)
